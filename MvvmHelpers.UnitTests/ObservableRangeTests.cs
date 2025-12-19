@@ -195,6 +195,7 @@ namespace MvvmHelpers.UnitTests
 		{
 			var collection = new ObservableRangeCollection<int>(new[] { 1, 2, 3 });
 			var addedData = new List<int> { 4, 5 };
+			var mergedData = collection.Concat(addedData).ToList();
 
 			collection.CollectionChanged += (s, e) =>
 			{
@@ -207,7 +208,11 @@ namespace MvvmHelpers.UnitTests
 
 			collection.AddRange(addedData.Where(x => !collection.Contains(x)));
 
-			Assert.IsTrue(collection.Count == 5);
+			Assert.IsTrue(collection.Count == mergedData.Count);
+			for (var i = 0; i < mergedData.Count; i++)
+			{
+				Assert.AreEqual(mergedData[i], collection[i]);
+			}
 		}
 	}
 }
