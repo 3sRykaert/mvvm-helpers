@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 
 namespace MvvmHelpers.UnitTests
 {
@@ -187,6 +188,19 @@ namespace MvvmHelpers.UnitTests
 
 			// the collection should not be modified if the source items are not found
 			Assert.IsTrue(collection.Count == 6, "collection was mutated");
+		}
+
+		[TestMethod]
+		public void AddData()
+		{
+			var collection = new ObservableRangeCollection<int>(new[] { 1, 2, 3 });
+			var addedData = new List<int> { 4, 5 };
+
+			collection.AddRange(addedData.Where(x => !collection.Contains(x)));
+
+			Assert.IsTrue(collection.Count == 5);
+			//The argument changedItems in RaiseChangeNotificationEvents should be the addedData list.
+			//No way to verify that here though.
 		}
 	}
 }
