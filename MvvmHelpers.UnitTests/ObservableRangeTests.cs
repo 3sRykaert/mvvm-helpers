@@ -191,16 +191,23 @@ namespace MvvmHelpers.UnitTests
 		}
 
 		[TestMethod]
-		public void AddData()
+		public void AddRangeShouldHaveCorrectDataInCollectionChanged()
 		{
 			var collection = new ObservableRangeCollection<int>(new[] { 1, 2, 3 });
 			var addedData = new List<int> { 4, 5 };
 
+			collection.CollectionChanged += (s, e) =>
+			{
+				Assert.AreEqual(addedData.Count, e.NewItems.Count);
+				for (var i = 0; i < addedData.Count; i++)
+				{
+					Assert.AreEqual(addedData[i], (int)e.NewItems[i]);
+				}
+			};
+
 			collection.AddRange(addedData.Where(x => !collection.Contains(x)));
 
 			Assert.IsTrue(collection.Count == 5);
-			//The argument changedItems in RaiseChangeNotificationEvents should be the addedData list.
-			//No way to verify that here though.
 		}
 	}
 }

@@ -48,7 +48,7 @@ namespace MvvmHelpers
 
 			var changedItems = collection is List<T> ? (List<T>)collection : new List<T>(collection);
 
-			var itemsAdded = AddArrangeCore(changedItems);
+			var itemsAdded = AddArrangeCore(collection);
 
 			if (!itemsAdded)
 				return;
@@ -59,7 +59,6 @@ namespace MvvmHelpers
 
 				return;
 			}
-
 
 			RaiseChangeNotificationEvents(
 				action: NotifyCollectionChangedAction.Add,
